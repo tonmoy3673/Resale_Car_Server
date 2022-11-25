@@ -34,7 +34,7 @@ async function run(){
             const result=await categoryCollection.findOne(query)
             res.send(result);
         })
-        
+
 
         app.post('/users',async(req,res)=>{
             const user=req.body;
@@ -48,6 +48,16 @@ async function run(){
             const result=await usersCollection.find(user).toArray();
             res.send(result);
             console.log(result);
+        })
+
+        app.get('/products',async(req,res)=>{
+            let query={}
+            if(req.query.id){
+                query={categoryId:req.query?.id}
+            }
+
+            const result=await productsCollections.find(query).toArray();
+            res.send(result);
         })
 
         // app.get('/jwt', async(req, res)=>{
