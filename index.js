@@ -17,7 +17,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run(){
     try{
-        const usersCollection=client.db('carDealer').collection('Users');
+        const usersCollection=client.db('CarDealer').collection('users');
 
         app.post('/users',async(req,res)=>{
             const user=req.body;
@@ -32,6 +32,33 @@ async function run(){
             res.send(result);
             console.log(result);
         })
+
+        // app.get('/jwt', async(req, res)=>{
+        //     const email = req.query.email;
+        //     const query = { email: email };
+        //     const user = await usersCollection.findOne(query);
+        //     if (user) {
+        //         const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
+        //         return res.send({ accessToken: token });
+        //     }
+        //     res.status(403).send({ accessToken: '' })
+        // })
+        // const jwt = require('jsonwebtoken');
+
+        
+        app.get('/categories', async(req, res)=>{
+            const query = {}
+            const result = await categoriesCollection.find(query).toArray();
+            res.send(result)
+        })
+        app.get('/cars/:id', async(req, res)=>{
+            const id = req.query.id;
+            console.log(id);
+            const query = {category_id: id}
+            const result = await carsCollection.find(query).toArray();
+            res.send(result)
+        })
+
     }
     finally{
 
@@ -44,4 +71,4 @@ app.get('/', async (req, res) => {
     res.send('Car Dealer server is running');
 })
 
-app.listen(port, () => console.log(`Doctors portal running on ${port}`));
+app.listen(port, () => console.log(`Car Dealer running on ${port}`));
