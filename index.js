@@ -77,7 +77,7 @@ async function run(){
             const query={email}
             const user=await usersCollection.findOne(query);
             res.send({isSeller: user?.role==='seller'});
-            console.log(user);
+            
         })
         app.get('/users/buyer/:email',async(req,res)=>{
             const email=req.params.email;
@@ -90,6 +90,20 @@ async function run(){
             const id=req.params.id;
             const filter={_id:ObjectId(id)};
             const result=await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
+        app.delete('/users/seller/:id',async(req,res)=>{
+            const id=req.params.id;
+            const filter={_id:ObjectId(id)};
+            const result=await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
+        app.get('/products/my-products',async(req,res)=>{
+            const email=req.query.email;
+            const query={email:email}
+            const result=await productsCollections.find(query).toArray();
             res.send(result);
         })
         
