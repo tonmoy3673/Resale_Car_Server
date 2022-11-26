@@ -50,6 +50,12 @@ async function run(){
             console.log(result);
         })
 
+        app.post('/products',async(req,res)=>{
+            const products=req.body;
+            const result =await productsCollections.insertOne(products);
+            res.send(result)
+
+        })
         app.get('/products',async(req,res)=>{
             let query={}
             if(req.query.id){
