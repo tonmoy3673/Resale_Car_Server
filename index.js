@@ -85,6 +85,13 @@ async function run(){
             const user=await usersCollection.findOne(query);
             res.send({isBuyer: user?.role==='buyer'});
         })
+
+        app.delete('/users/buyer/:id',async(req,res)=>{
+            const id=req.params.id;
+            const filter={_id:ObjectId(id)};
+            const result=await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
         
         // app.get('/jwt', async(req, res)=>{
         //     const email = req.query.email;
