@@ -19,7 +19,7 @@ async function run(){
     try{
         const usersCollection=client.db('CarDealer').collection('users');
         const categoryCollection=client.db('CarDealer').collection('category');
-
+        const ordersCollections=client.db('CarDealer').collection('orders')
         const productsCollections=client.db('CarDealer').collection('allProducts')
 
         app.get('/category',async(req,res)=>{
@@ -104,6 +104,26 @@ async function run(){
             const email=req.query.email;
             const query={email:email}
             const result=await productsCollections.find(query).toArray();
+            res.send(result);
+        })
+
+        app.delete('/products/:id',async (req,res)=>{
+            const id=req.params.id;
+            const filter={_id:ObjectId(id)};
+            const result=await productsCollections.deleteOne(filter);
+            res.send(result);
+        })
+
+        app.post('/orders',async(req,res)=>{
+            const query=req.body;
+            const result=await ordersCollections.insertOne(query);
+            res.send(result);
+        })
+
+        app.get('/orders',async(req,res)=>{
+            const email=req.query.email;
+            const query={email : email}
+            const result=await ordersCollections.find(query).toArray();
             res.send(result);
         })
         
