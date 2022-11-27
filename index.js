@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { query } = require('express');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
@@ -79,6 +80,16 @@ async function run(){
             res.send({isSeller: user?.role==='seller'});
             
         })
+        app.get('/users?role=buyers',async(req,res)=>{
+            const query={role: query.role};
+            const role= usersCollection.find(query);
+            const buyers=await role.toArray();
+            res.send(buyers);
+            
+
+        })
+
+
         app.get('/users/buyer/:email',async(req,res)=>{
             const email=req.params.email;
             const query={email}
