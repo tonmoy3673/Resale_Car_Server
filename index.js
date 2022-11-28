@@ -88,6 +88,14 @@ async function run(){
             
 
         })
+        app.get('/users?role=sellers',async(req,res)=>{
+            const query={role: query.role};
+            const role= usersCollection.find(query);
+            const sellers=await role.toArray();
+            res.send(sellers);
+            
+
+        })
 
 
         app.get('/users/buyer/:email',async(req,res)=>{
